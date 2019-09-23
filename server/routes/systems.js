@@ -11,12 +11,11 @@ connection.connect(function (err) {
 	console.log("Connected!");
 });
 
-/* GET users listing. */
+/* GET systems listing. */
 router.get('/', function (req, res, next) {
-	connection.query('SELECT * From users', function (err, results, fields) {
+	connection.query('SELECT * FROM Systems', function (err, results, fields) {
 		if (!err) {
 			res.send(JSON.stringify(results));
-			// console.log(rows);
 		} else {
 			console.log('Error while performing Query.');
 		}
@@ -26,7 +25,7 @@ router.get('/', function (req, res, next) {
 router.post('/edit', function (req, res, next) {
 	// execute the UPDATE statement
 	
-	connection.query('UPDATE USERS SET NAME = "' + req.body.name + '", EMAIL = "' + req.body.email + '" WHERE ID = ' + Number(req.body.id), function (error, results, fields) {
+	connection.query('UPDATE Systems SET NAME = "' + req.body.name + '", DESCRIPTION = "' + req.body.description + '" WHERE ID = "' + req.body.id + '"', function (error, results, fields) {
 		if (!error) {
 			res.send(JSON.stringify(results));
 		console.log('Rows affected:', results.affectedRows);
@@ -37,7 +36,7 @@ router.post('/edit', function (req, res, next) {
 });
 
 router.post('/add', function (req, res, next) {
-	connection.query('insert into users (name, email, bloodGroup, phone_number, dob) values ("' + req.body.name + '", "' + req.body.email + '", "' + req.body.bloodGroup + '", "' + req.body.phone_number + '", "' + req.body.dob + '")', function (err, results, fields) {
+	connection.query('INSERT INTO Systems (ID, NAME, DESCRIPTION) values ("' + req.body.id + '", "' + req.body.name + '", "' + req.body.description + '")', function (err, results, fields) {
 		if (!err) {
 			res.send(JSON.stringify(results));
 			console.log(results);
@@ -48,7 +47,7 @@ router.post('/add', function (req, res, next) {
 });
 
 router.post('/delete', function (req, res, next) {
-	connection.query('DELETE from users where id = ' + Number(req.params.id), function (error, results, fields) {
+	connection.query('DELETE FROM Systems WHERE ID = "' + req.params.id + '"', function (error, results, fields) {
 		if (!error) {
 			res.send(JSON.stringify(results));
 			console.log(results);

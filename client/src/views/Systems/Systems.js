@@ -7,16 +7,17 @@ import Button from 'react-validation/build/button';
 import Textarea from 'react-validation/build/textarea';
 import '../validation.js';
 
-export default class Icons extends Component {
+export default class Systems extends Component {
     constructor(props) {
         super(props)
         this.state = {
             data: [],
-            modalIsOpen: false,
+            createModalIsOpen: false,
+            updateModalIsOpen: false,
             name: '',
             email: '',
             msg: '',
-            id: 0
+            id: ''
         }
 
         this.openModal = this.openModal.bind(this);
@@ -26,20 +27,30 @@ export default class Icons extends Component {
         this.handleSubmit = this.handleSubmit.bind(this); // Function where we submit data
     }
 
-    openModal(member) {
-        this.setState({
-            modalIsOpen: true,
-            name: member.name,
-            email: member.email,
-            id: member.id
-        }, function () {
-            console.log(this.state.value);
-        });
+    
+    
+    openModal(system) {
+        if (system != "create") {
+            this.setState({
+                updateModalIsOpen: true,
+                name: system.NAME,
+                description: system.DESCRIPTION,
+                id: system.ID
+            }, function () {
+                console.log(this.state.value);
+            });
+        }
+        else{
+            this.setState({
+                createModalIsOpen: true
+            })
+        }
     }
 
     closeModal() {
         this.setState({
-            modalIsOpen: false
+            createModalIsOpen: false,
+            updateModalIsOpen: false
         });
     }
 
@@ -49,53 +60,48 @@ export default class Icons extends Component {
         });
     }
 
-    handleSubmit(event) {
-        event.preventDefault()
+    handleSubmit(e) {
+        e.preventDefault()
         var data = {
-            name: this.state.name,
-            email: this.state.email,
-            bloodGroup: this.state.bloodGroup,
-            phone_number: this.state.phone_number,
-            dob: this.state.dob
+            name: e.target.name.value,
+            description: e.target.description.value,
         }
         console.log(data)
-        fetch("http://localhost:9000/users/add", {
+        fetch("http://localhost:9000/systems/add", {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
-        }).then(function(response) {
+        }).then(function (response) {
             if (response.status >= 400) {
-              throw new Error("Bad response from server");
+                throw new Error("Bad response from server");
             }
             return response.json();
-        }).then(function(data) {
-            console.log(data)    
-            if(data == "success"){
-               this.setState({msg: "Thanks for registering"});  
+        }).then(function (data) {
+            console.log(data)
+            if (data == "success") {
+                this.setState({ msg: "Thanks for registering" });
             }
-        }).catch(function(err) {
+        }).catch(function (err) {
             console.log(err)
         });
+        this.closeModal();
     }
 
-    handleEdit(event) {
+    handleEdit(e) {
         //Edit functionality
-        event.preventDefault()
+        e.preventDefault()
         var data = {
-            // name: event.target.name.value,
-            // email: event.target.email.value,
-            // id: event.target.id.value
-            name: this.state.name,
-            email: this.state.email,
-            bloodGroup: this.state.bloodGroup,
-            phone_number: this.state.phone_number,
-            dob: this.state.dob,
+            name: e.target.name.value,
+            description: e.target.description.value,
             id: this.state.id
+        //     name: this.state.name,
+        //     description: this.state.description,
+        //     id: this.state.id
         }
         console.log(data);
         console.log(JSON.stringify(data));
 
-        fetch("http://localhost:9000/users/edit", {
+        fetch("http://localhost:9000/systems/edit", {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -112,13 +118,14 @@ export default class Icons extends Component {
         }).catch(function (err) {
             console.log(err);
         });
+        this.closeModal();
     }
 
-    deleteMember(member) {
+    deleteMember(system) {
         var data = {
-            id: member.id
+            id: system.ID
         }
-        fetch("/users/delete", {
+        fetch("http://localhost:9000/systems/delete", {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
@@ -146,64 +153,71 @@ export default class Icons extends Component {
         })
         );
     }
+    
     componentDidMount() {
         Modal.setAppElement('body');
-        fetch('http://localhost:9000/users')
+        fetch('http://localhost:9000/systems')
             .then(response => response.json())
             .then(data => this.setState({ data }));
     }
 
     render() {
         return (
-            
+
             <div className="container">
                 <div className="container register-form">
-            <form onSubmit={this.handleSubmit} method="POST">
-                <label>Name</label>
-                <input onChange={this.logChange} className="form-control" value={this.state.name} placeholder='John' name='name' validations={['required']}/>
-                <label>Email</label>
-                <input onChange={this.logChange} className="form-control" value={this.state.email} placeholder='email@email.com' name='email' validations={['required', 'email']}/>
-                <label>bloodGroup</label>
-                <input onChange={this.logChange} className="form-control" value={this.state.bloodGroup} placeholder='O' name='bloodGroup' validations={[]}/>
-                <label>phone_number</label>
-                <input onChange={this.logChange} className="form-control" value={this.state.phone_number} placeholder='01012345678' name='phone_number' validations={[]}/>
-                <label>dob</label>
-                <input onChange={this.logChange} className="form-control" value={this.state.dob} placeholder='ai' name='dob' validations={[]}/>
-                <div className="submit-section">
-                    <button className="btn btn-uth-submit">Create</button>
+      
+                <td><a onClick={() => this.openModal("create")}>Create</a> </td>
+                    <Modal
+                        isOpen={this.state.createModalIsOpen}
+                        onRequestClose={this.closeModal}
+                        contentLabel="Create Modal" >
+                        <form onSubmit={this.handleSubmit} method="POST">
+                            <label>ID</label>
+                            <input onChange={this.logChange} className="form-control" value={this.state.id} placeholder='' name='id' validations={['required']} />
+                            <label>Name</label>
+                            <input onChange={this.logChange} className="form-control" value={this.state.name} placeholder='' name='name' validations={['required']} />
+                            <label>Description</label>
+                            <input onChange={this.logChange} className="form-control" value={this.state.description} placeholder='' name='description' validations={['required']} />
+                            <div className="submit-section">
+                            <button className="btn btn-uth-submit">Save</button>
+                                </div>
+                            </form>
+                    </Modal>
                 </div>
-            </form>
-        </div>
 
                 <div className="panel panel-default p50 uth-panel">
                     <table className="table table-hover">
                         <thead>
                             <tr>
-                                <th>Member name</th>
-                                <th>Member email</th>
-                                <th>Blood Group</th>
-                                <th>Phone number</th>
-                                <th>Dob</th>
+                                <th>Name</th>
+                                <th>Description</th>
                                 <th>Action</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {this.state.data.map(member =>
-                                <tr key={member.id}>
-                                    <td>{member.name} </td>
-                                    <td>{member.email}</td>
-                                    <td>{member.bloodGroup}</td>
-                                    <td>{member.phone_number}</td>
-                                    <td>{member.dob}</td>
-                                    <td><a onClick={() => this.openModal(member)}>Edit</a>|
-                            <a onClick={() => this.deleteMember(member)}>Delete</a></td>
+                            {this.state.data.map(system =>
+                                <tr key={system.ID}>
+                                    <td>{system.NAME} </td>
+                                    <td>{system.DESCRIPTION}</td>
+                                    <td><a onClick={() => this.openModal(system)}>Edit</a>|
+                            <a onClick={() => this.deleteMember(system)}>Delete</a></td>
                                 </tr>
                             )}
                             <Modal
-                                isOpen={this.state.modalIsOpen}
+                                isOpen={this.state.updateModalIsOpen}
                                 onRequestClose={this.closeModal}
-                                contentLabel="Example Modal" >
-                                {/* <Form onSubmit={this.handleEdit} method="POST">
+                                contentLabel="Update Modal" >
+                                <form onSubmit={this.handleEdit} method="POST">
+                                    <label>Name</label>
+                                    <input onChange={this.logChange} className="form-control" value={this.state.name} placeholder='' name='name' validations={['required']} />
+                                    <label>Description</label>
+                                    <input onChange={this.logChange} className="form-control" value={this.state.description} placeholder='' name='description' validations={['required']} />
+                                    <div className="submit-section">
+                                        <button className="btn btn-uth-submit">Save</button>
+                                    </div>
+                                </form>
+                            {/* <Form onSubmit={this.handleEdit} method="POST">
                             <label>Name</label>
                             <Input onChange={this.logChange} className="form-control" value={this.state.name} placeholder='John' name='name' validations={['required']}/>
                             <label>Email</label>
@@ -212,7 +226,7 @@ export default class Icons extends Component {
                             <Button className="btn btn-uth-submit">Submit</Button>
                             </div>
                         </Form> */}
-                                {/* <Form onSubmit={this.handleEdit} method="POST">
+                            {/* <Form onSubmit={this.handleEdit} method="POST">
                                     <div className="row">
                                         <div className="small-12 columns">
                                             <h3>Leave a comment</h3>
@@ -249,20 +263,20 @@ export default class Icons extends Component {
                                         </div>
                                     </div>
                                 </Form> */}
-                            <form onSubmit={this.handleEdit} method="POST">
-                            <label>Name</label>
-                            <input onChange={this.logChange} className="form-control" value={this.state.name} placeholder='John' name='name' validations={['required']}/>
-                            <label>Email</label>
-                            <input onChange={this.logChange} className="form-control" value={this.state.email} placeholder='email@email.com' name='email' validations={['required', 'email']}/>
-                            <div className="submit-section">
-                            <button className="btn btn-uth-submit">Submit</button>
-                            </div>
-                        </form>
+                            {/* <form onSubmit={this.handleEdit} method="POST">
+                                <label>Name</label>
+                                <input onChange={this.logChange} className="form-control" value={this.state.name} placeholder='' name='name' validations={['required']} />
+                                <label>Description</label>
+                                <input onChange={this.logChange} className="form-control" value={this.state.description} placeholder='' name='description' validations={['required']} />
+                                <div className="submit-section">
+                                    <button className="btn btn-uth-submit">Save</button>
+                                </div>
+                            </form> */}
                             </Modal>
                         </tbody>
                     </table>
-                </div>
             </div>
+            </div >
         );
     }
 }

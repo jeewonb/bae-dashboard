@@ -27,11 +27,11 @@ import Language from "@material-ui/icons/Language";
 // core components/views for Admin layout
 import DashboardPage from "views/Dashboard/Dashboard.js";
 import UserProfile from "views/UserProfile/UserProfile.js";
-import TableList from "views/TableList/TableList.js";
+import Logs from "views/Logs/Logs.js";
 import Typography from "views/Typography/Typography.js";
-import Icons from "views/Icons/Icons.js";
-import Maps from "views/Maps/Maps.js";
-import NotificationsPage from "views/Notifications/Notifications.js";
+import Systems from "views/Systems/Systems.js";
+import Servers from "views/Servers/Servers.js";
+import Processes from "views/Processes/Processes.js";
 import Users from "views/Users/Users.js";
 // core components/views for RTL layout
 
@@ -51,31 +51,31 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    path: "/icons",
+    path: "/systems",
     name: "통합 - 시스템 관리",
     icon: BubbleChart,
-    component: Icons,
+    component: Systems,
     layout: "/admin"
   },
   {
-    path: "/maps",
+    path: "/servers",
     name: "통합 - 서버 관리",
     icon: LocationOn,
-    component: Maps,
+    component: Servers,
     layout: "/admin"
   },
   {
-    path: "/notifications",
+    path: "/processes",
     name: "통합 - 프로세스 관리",
     icon: Notifications,
-    component: NotificationsPage,
+    component: Processes,
     layout: "/admin"
   },
   {
-    path: "/table",
+    path: "/logs",
     name: "로그 관리",
     icon: "content_paste",
-    component: TableList,
+    component: Logs,
     layout: "/admin"
   },
   {

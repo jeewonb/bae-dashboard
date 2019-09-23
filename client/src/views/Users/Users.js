@@ -47,8 +47,6 @@ export default class Users extends Component {
                         <tr key={member.id}>
                         <td>{member.name} </td>
                         <td>{member.email}</td>
-                        <td>{member.bloodGroup}</td>
-                        <td>{member.phone_number}</td>
                         <td><a>Edit</a>|<a>Delete</a></td>
                         </tr>
                     )}
