@@ -30,32 +30,7 @@ export default class Users extends Component {
 
     render() {
         return (
-        <div className="container"> 
-            <div className="panel panel-default p50 uth-panel">
-                <table className="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>Member name</th>
-                            <th>Member email</th>
-                            <th>Blood Group</th>
-                            <th>Phone number</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    {this.state.users.map(member =>
-                        <tr key={member.id}>
-                        <td>{member.name} </td>
-                        <td>{member.email}</td>
-                        <td>{member.bloodGroup}</td>
-                        <td>{member.phone_number}</td>
-                        <td><a>Edit</a>|<a>Delete</a></td>
-                        </tr>
-                    )}
-                    </tbody>
-                </table>
-            </div>
-        </div>
+            <div></div>
         );
     }
 }

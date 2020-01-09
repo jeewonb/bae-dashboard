@@ -29,7 +29,7 @@ import DashboardPage from "views/Dashboard/Dashboard.js";
 import UserProfile from "views/UserProfile/UserProfile.js";
 import TableList from "views/TableList/TableList.js";
 import Typography from "views/Typography/Typography.js";
-import Icons from "views/Icons/Icons.js";
+import CRUDTable from "views/CRUDTable/CRUDTable.js";
 import Maps from "views/Maps/Maps.js";
 import NotificationsPage from "views/Notifications/Notifications.js";
 import Users from "views/Users/Users.js";
@@ -51,10 +51,10 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    path: "/icons",
+    path: "/crudtable",
     name: "통합 - 시스템 관리",
     icon: BubbleChart,
-    component: Icons,
+    component: CRUDTable,
     layout: "/admin"
   },
   {

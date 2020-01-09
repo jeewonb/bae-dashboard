@@ -26,7 +26,7 @@ router.get('/', function (req, res, next) {
 router.post('/edit', function (req, res, next) {
 	// execute the UPDATE statement
 	
-	connection.query('UPDATE USERS SET NAME = "' + req.body.name + '", EMAIL = "' + req.body.email + '" WHERE ID = ' + Number(req.body.id), function (error, results, fields) {
+	connection.query('update users set name = "' + req.body.name + '", email = "' + req.body.email + '", phone_number = "' + req.body.phone_number + '", date = "' + req.body.date + '", type = "' + req.body.type + '" where id = ' + Number(req.body.id), function (error, results, fields) {
 		if (!error) {
 			res.send(JSON.stringify(results));
 		console.log('Rows affected:', results.affectedRows);
@@ -37,7 +37,7 @@ router.post('/edit', function (req, res, next) {
 });
 
 router.post('/add', function (req, res, next) {
-	connection.query('insert into users (name, email, bloodGroup, phone_number, dob) values ("' + req.body.name + '", "' + req.body.email + '", "' + req.body.bloodGroup + '", "' + req.body.phone_number + '", "' + req.body.dob + '")', function (err, results, fields) {
+	connection.query('insert into users (name, email, phone_number, date, type) values ("' + req.body.name + '", "' + req.body.email + '", "' + req.body.phone_number + '", "' + req.body.date + '", "' + req.body.type + '")', function (err, results, fields) {
 		if (!err) {
 			res.send(JSON.stringify(results));
 			console.log(results);
@@ -48,7 +48,7 @@ router.post('/add', function (req, res, next) {
 });
 
 router.post('/delete', function (req, res, next) {
-	connection.query('DELETE from users where id = ' + Number(req.params.id), function (error, results, fields) {
+	connection.query('delete from users where id = ' + Number(req.body.id), function (error, results, fields) {
 		if (!error) {
 			res.send(JSON.stringify(results));
 			console.log(results);
