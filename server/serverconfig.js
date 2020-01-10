@@ -1,7 +1,7 @@
 var config = {
     host: 'localhost',
     port:  '3307',
-    user: 'admin1',
+    user: 'root',
     password: 'mom123',
     database:'momdb'
 };

@@ -48,7 +48,7 @@ const useStyles = theme => ({
       },
     });
 
-class CRUDTable extends Component {
+class Systems extends Component {
     constructor(props) {
         super(props)
         this.state = {
@@ -103,7 +103,7 @@ class CRUDTable extends Component {
                                 title="System Lists"
                                 tableRef={this.tableRef}
                                 columns={[
-                                    { title: 'ID', field: 'id' },
+                                    { title: 'ID', field: 'id', editable: 'never' },
                                     { title: 'Name', field: 'name' },
                                     { title: 'Email', field: 'email' },
                                     { title: 'Phone Number', field: 'phone_number' },
@@ -119,7 +119,6 @@ class CRUDTable extends Component {
                                 editable={{
                                     onRowAdd: newData =>
                                       new Promise(resolve => {
-
                                         fetch("http://localhost:9000/users/add", {
                                             method: 'POST',
                                             headers: { 'Content-Type': 'application/json' },
@@ -158,7 +157,6 @@ class CRUDTable extends Component {
                                                 if (response.status >= 400) {
                                                     throw new Error("Bad response from server");
                                                 }
-                                                console.log(newData, response.json());
                                                 return response.json();
                                             }).then((respData) => {
                                                 console.log(respData);
@@ -166,11 +164,11 @@ class CRUDTable extends Component {
                                                 resolve();
                                                 if (oldData) {
                                                     this.setState(prevState => {
-                                                      const data = [...prevState.data];
-                                                      data[data.indexOf(oldData)] = newData;
-                                                      return { ...prevState, data };
+                                                        const data = [...prevState.data];
+                                                        data[data.indexOf(oldData)] = newData;
+                                                        return { ...prevState, data };
                                                     });
-                                                  }
+                                                }
                                             }).catch(function (err) {
                                                 reject();
                                                 console.log(err);
@@ -221,4 +219,4 @@ class CRUDTable extends Component {
     }
 }
 
-export default withStyles(useStyles)(CRUDTable)
+export default withStyles(useStyles)(Systems)

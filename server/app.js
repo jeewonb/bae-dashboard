@@ -12,8 +12,6 @@ var testAPIRouter = require("./routes/testAPI");
 
 var app = express();
 
-
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -44,39 +42,5 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-
-// app.get('/', (req, res) => {
-//   res.send('user list');
-// })
-
-// app.get('/users', function (req, res) {
-//   // connection.query('SELECT * FROM USERS', function (error, results, fields) {
-//   //   if (error) {
-//   //       console.log(error);
-//   //   }
-//   //   console.log(results);
-//   // });
-//   connection.query('SELECT * from users', function(err, rows, fields) {
-//     if (!err) {
-//         res.send(JSON.stringify(rows));
-//         console.log(rows);
-//     } else {
-//         console.log('Error while performing Query.');
-//     }
-// });
-// connection.end();
-// });
-
-// app.get('/users/add', (req, res) => {
-//   const{ id, name, bloodGroup, email, phone_number } = req.query
-//   const INSERT_USER_QUERY = `INSERT INTO MEMBERS(id, name, bloodGroup, email, phone_number) VALUES('${id}', '${name}', '${bloodGroup}', '${email}', '${phone_number}')`
-//   connection.query(INSERT_USER_QUERY, (err, results) => {
-//       if(err) {
-//           return res.send(err)
-//       } else {
-//           return res.send('Successfully Inserted')
-//       }
-//   })
-// })
 
 module.exports = app;

@@ -11,12 +11,11 @@ connection.connect(function (err) {
 	console.log("Connected!");
 });
 
-/* GET users listing. */
+/* GET systems listing. */
 router.get('/', function (req, res, next) {
-	connection.query('SELECT * From users', function (err, results, fields) {
+	connection.query('select * FROM users', function (err, results, fields) {
 		if (!err) {
 			res.send(JSON.stringify(results));
-			// console.log(rows);
 		} else {
 			console.log('Error while performing Query.');
 		}
@@ -25,7 +24,6 @@ router.get('/', function (req, res, next) {
 
 router.post('/edit', function (req, res, next) {
 	// execute the UPDATE statement
-	
 	connection.query('update users set name = "' + req.body.name + '", email = "' + req.body.email + '", phone_number = "' + req.body.phone_number + '", date = "' + req.body.date + '", type = "' + req.body.type + '" where id = ' + Number(req.body.id), function (error, results, fields) {
 		if (!error) {
 			res.send(JSON.stringify(results));
