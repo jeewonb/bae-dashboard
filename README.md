@@ -1,6 +1,6 @@
 # mom-dashboard
 
-[How to run] 
+[How to run]
 1.
 cd server
 npm start
