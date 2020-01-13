@@ -16,7 +16,7 @@ import routes from "routes.js";
 import styles from "assets/jss/material-dashboard-react/layouts/adminStyle.js";
 
 // import bgImage from "assets/img/sidebar-5.jpg";
-import logo from "assets/img/middlewarelogo-3.png";
+import logo from "assets/img/dashboard.png";
 
 let ps;
 
