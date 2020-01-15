@@ -4,8 +4,10 @@
 logs
 **/*.backup.*
 **/*.back.*
+.vscode
 
 node_modules
+
 bower_components
 
 *.sublime*

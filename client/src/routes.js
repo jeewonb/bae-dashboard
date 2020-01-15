@@ -18,21 +18,22 @@
 // @material-ui/icons
 import Dashboard from "@material-ui/icons/Dashboard";
 import Person from "@material-ui/icons/Person";
-import LibraryBooks from "@material-ui/icons/LibraryBooks";
+import AssessmentIcon from "@material-ui/icons/Assessment";
 import BubbleChart from "@material-ui/icons/BubbleChart";
-import LocationOn from "@material-ui/icons/LocationOn";
+import DesktopMacIcon from "@material-ui/icons/DesktopMac";
 import Notifications from "@material-ui/icons/Notifications";
 import Unarchive from "@material-ui/icons/Unarchive";
+import StorageIcon from "@material-ui/icons/Storage";
 import Language from "@material-ui/icons/Language";
 // core components/views for Admin layout
 import DashboardPage from "views/Dashboard/Dashboard.js";
 import UserProfile from "views/UserProfile/UserProfile.js";
-import Logs from "views/Logs/Logs.js";
-import Typography from "views/Typography/Typography.js";
-import Systems from "views/Systems/Systems.js";
-import Servers from "views/Servers/Servers.js";
-import Processes from "views/Processes/Processes.js";
-import Users from "views/Users/Users.js";
+import Log from "views/Log/Log.js";
+import Performance from "views/Performance/Performance.js";
+import System from "views/System/System.js";
+import Servers from "views/Server/Servers.js";
+import Process from "views/Process/Process.js";
+import User from "views/User/User.js";
 // core components/views for RTL layout
 
 const dashboardRoutes = [
@@ -44,45 +45,52 @@ const dashboardRoutes = [
     layout: "/admin"
   },
   {
-    path: "/users",
+    path: "/userProfile",
     name: "통합 관리",
     icon: Person,
-    component: Users,
+    component: UserProfile,
     layout: "/admin"
   },
   {
-    path: "/systems",
-    name: "통합 - 시스템 관리",
-    icon: BubbleChart,
-    component: Systems,
+    path: "/system",
+    name: "시스템 관리",
+    icon: DesktopMacIcon,
+    component: System,
     layout: "/admin"
   },
   {
-    path: "/servers",
-    name: "통합 - 서버 관리",
-    icon: LocationOn,
+    path: "/server",
+    name: "서버 관리",
+    icon: DesktopMacIcon,
     component: Servers,
     layout: "/admin"
   },
   {
-    path: "/processes",
-    name: "통합 - 프로세스 관리",
-    icon: Notifications,
-    component: Processes,
+    path: "/process",
+    name: "프로세스 관리",
+    icon: DesktopMacIcon,
+    component: Process,
     layout: "/admin"
   },
   {
-    path: "/logs",
+    path: "/log",
     name: "로그 관리",
-    icon: "content_paste",
-    component: Logs,
+    icon: StorageIcon,
+    component: Log,
     layout: "/admin"
   },
   {
-    path: "/typography",
+    path: "/performance",
     name: "성능 관리",
-    icon: LibraryBooks,
-    component: Typography,
+    icon: AssessmentIcon,
+    component: Performance,
+    layout: "/admin"
+  },
+  {
+    path: "/user",
+    name: "사용자 관리",
+    icon: Person,
+    component: User,
     layout: "/admin"
   }
 ];

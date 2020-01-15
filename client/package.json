@@ -11,6 +11,7 @@
     "classnames": "2.2.6",
     "eslint-plugin-react-hooks": "^2.0.1",
     "history": "4.9.0",
+    "material-table": "^1.55.0",
     "material-ui": "^0.20.2",
     "perfect-scrollbar": "1.4.0",
     "prop-types": "15.7.2",

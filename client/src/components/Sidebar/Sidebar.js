@@ -5,12 +5,17 @@ import PropTypes from "prop-types";
 import { NavLink } from "react-router-dom";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-import Drawer from "@material-ui/core/Drawer";
-import Hidden from "@material-ui/core/Hidden";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import ListItemText from "@material-ui/core/ListItemText";
-import Icon from "@material-ui/core/Icon";
+import {
+  Drawer,
+  Hidden,
+  List,
+  ListItem,
+  ListItemText,
+  Icon
+} from "@material-ui/core";
+import ExpandLess from "@material-ui/icons/ExpandLess";
+import ExpandMore from "@material-ui/icons/ExpandMore";
+
 // core components
 import AdminNavbarLinks from "components/Navbars/AdminNavbarLinks.js";
 import RTLNavbarLinks from "components/Navbars/RTLNavbarLinks.js";
@@ -25,22 +30,15 @@ export default function Sidebar(props) {
   function activeRoute(routeName) {
     return window.location.href.indexOf(routeName) > -1 ? true : false;
   }
-  const { color, logo, image, logoText, routes } = props;
+  const { color, logo, image, logoText, routes, open } = props;
   var links = (
     <List className={classes.list}>
       {routes.map((prop, key) => {
         var activePro = " ";
         var listItemClasses;
-        if (prop.path === "/upgrade-to-pro") {
-          activePro = classes.activePro + " ";
-          listItemClasses = classNames({
-            [" " + classes[color]]: true
-          });
-        } else {
-          listItemClasses = classNames({
-            [" " + classes[color]]: activeRoute(prop.layout + prop.path)
-          });
-        }
+        listItemClasses = classNames({
+          [" " + classes[color]]: activeRoute(prop.layout + prop.path)
+        });
         const whiteFontClasses = classNames({
           [" " + classes.whiteFont]: activeRoute(prop.layout + prop.path)
         });
@@ -74,6 +72,7 @@ export default function Sidebar(props) {
                 })}
                 disableTypography={true}
               />
+              {open != null ? open ? <ExpandLess /> : <ExpandMore /> : null}
             </ListItem>
           </NavLink>
         );
@@ -83,7 +82,6 @@ export default function Sidebar(props) {
   var brand = (
     <div className={classes.logo}>
       <a
-        href="https://www.creative-tim.com?ref=mdr-sidebar"
         className={classNames(classes.logoLink, {
           [classes.logoLinkRTL]: props.rtlActive
         })}
