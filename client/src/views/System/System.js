@@ -52,11 +52,23 @@ class System extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [],
-      msg: ""
+      data: []
     };
-
+    // refresh table
     this.tableRef = React.createRef();
+  }
+
+  getData() {
+    fetch("http://localhost:9000/system")
+      .then(response => response.json())
+      .then(data => this.setState({ data }))
+      .catch(function(err) {
+        console.log(err);
+      });
+  }
+
+  componentDidMount() {
+    this.getData();
   }
 
   render() {
@@ -79,21 +91,10 @@ class System extends Component {
                     { title: "이름", field: "NAME" },
                     { title: "설명", field: "DESCRIPTION" }
                   ]}
-                  data={query =>
-                    new Promise((resolve, reject) => {
-                      let url = "http://localhost:9000/system";
-                      fetch(url)
-                        .then(response => response.json())
-                        .then(result => {
-                          resolve({
-                            data: result
-                          });
-                        });
-                    })
-                  }
+                  data={this.state.data}
                   editable={{
                     onRowAdd: newData =>
-                      new Promise(resolve => {
+                      new Promise((resolve, reject) => {
                         fetch("http://localhost:9000/system/add", {
                           method: "POST",
                           headers: { "Content-Type": "application/json" },
@@ -105,12 +106,6 @@ class System extends Component {
                             }
                             return response.json();
                           })
-                          .then(function(data) {
-                            console.log(data);
-                            if (data == "success") {
-                              this.setState({ msg: "Thanks for registering" });
-                            }
-                          })
                           .then(() => {
                             resolve();
                             this.setState(prevState => {
@@ -120,6 +115,7 @@ class System extends Component {
                             });
                           })
                           .catch(function(err) {
+                            reject();
                             console.log(err);
                           });
                       }),
@@ -139,9 +135,6 @@ class System extends Component {
                             }
                             return response.json();
                           })
-                          .then(respData => {
-                            console.log(respData);
-                          })
                           .then(() => {
                             resolve();
                             if (oldData) {
@@ -158,7 +151,7 @@ class System extends Component {
                           });
                       }),
                     onRowDelete: oldData =>
-                      new Promise(resolve => {
+                      new Promise((resolve, reject) => {
                         fetch("http://localhost:9000/system/delete", {
                           method: "POST",
                           headers: { "Content-Type": "application/json" },
@@ -170,13 +163,6 @@ class System extends Component {
                             }
                             return response.json();
                           })
-                          .then(function(data) {
-                            if (data === "success") {
-                              this.setState({
-                                msg: "System has been deleted."
-                              });
-                            }
-                          })
                           .then(() => {
                             resolve();
                             this.setState(prevState => {
@@ -186,6 +172,7 @@ class System extends Component {
                             });
                           })
                           .catch(function(err) {
+                            reject();
                             console.log(err);
                           });
                       })

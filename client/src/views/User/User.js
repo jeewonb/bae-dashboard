@@ -52,11 +52,23 @@ class User extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [],
-      msg: ""
+      data: []
     };
 
     this.tableRef = React.createRef();
+  }
+
+  getData() {
+    fetch("http://localhost:9000/user")
+      .then(response => response.json())
+      .then(data => this.setState({ data }))
+      .catch(function(err) {
+        console.log(err);
+      });
+  }
+
+  componentDidMount() {
+    this.getData();
   }
 
   render() {
@@ -67,40 +79,28 @@ class User extends Component {
           <GridItem xs={12} sm={12} md={12}>
             <Card>
               <CardHeader color="primary">
-                <h4 className={classes.cardTitleWhite}>사용자 현황</h4>
+              <h4 className={classes.cardTitleWhite}>사용자 현황</h4>
                 <p className={classes.cardCategoryWhite}></p>
               </CardHeader>
               <CardBody>
                 <MaterialTable
                   title="사용자 테이블"
-                  tableRef={this.tableRef}
                   columns={[
                     { title: "ID", field: "ID", editable: "onAdd" },
                     { title: "이름", field: "NAME" },
                     { title: "이메일", field: "EMAIL" },
                     { title: "연락처", field: "CONTACTS" },
-                    { title: "가입일자", field: "DATE" },
+                    { title: "가입일자", field: "DATE", type: "datetime" },
                     {
                       title: "라이센스 구매",
                       field: "LICENSE",
-                      lookup: { 34: "YES", 63: "NO" }
+                      lookup: { YES: "YES", NO: "NO" }
                     }
                   ]}
-                  data={query =>
-                    new Promise((resolve, reject) => {
-                      let url = "http://localhost:9000/user";
-                      fetch(url)
-                        .then(response => response.json())
-                        .then(result => {
-                          resolve({
-                            data: result
-                          });
-                        });
-                    })
-                  }
+                  data={this.state.data}
                   editable={{
                     onRowAdd: newData =>
-                      new Promise(resolve => {
+                      new Promise((resolve, reject) => {
                         fetch("http://localhost:9000/user/add", {
                           method: "POST",
                           headers: { "Content-Type": "application/json" },
@@ -112,12 +112,6 @@ class User extends Component {
                             }
                             return response.json();
                           })
-                          .then(function(data) {
-                            console.log(data);
-                            if (data == "success") {
-                              this.setState({ msg: "Thanks for registering" });
-                            }
-                          })
                           .then(() => {
                             resolve();
                             this.setState(prevState => {
@@ -127,6 +121,7 @@ class User extends Component {
                             });
                           })
                           .catch(function(err) {
+                            reject();
                             console.log(err);
                           });
                       }),
@@ -146,9 +141,6 @@ class User extends Component {
                             }
                             return response.json();
                           })
-                          .then(respData => {
-                            console.log(respData);
-                          })
                           .then(() => {
                             resolve();
                             if (oldData) {
@@ -165,7 +157,7 @@ class User extends Component {
                           });
                       }),
                     onRowDelete: oldData =>
-                      new Promise(resolve => {
+                      new Promise((resolve, reject) => {
                         fetch("http://localhost:9000/user/delete", {
                           method: "POST",
                           headers: { "Content-Type": "application/json" },
@@ -177,11 +169,6 @@ class User extends Component {
                             }
                             return response.json();
                           })
-                          .then(function(data) {
-                            if (data === "success") {
-                              this.setState({ msg: "User has been deleted." });
-                            }
-                          })
                           .then(() => {
                             resolve();
                             this.setState(prevState => {
@@ -191,6 +178,7 @@ class User extends Component {
                             });
                           })
                           .catch(function(err) {
+                            reject();
                             console.log(err);
                           });
                       })
@@ -200,9 +188,7 @@ class User extends Component {
                       icon: "refresh",
                       tooltip: "Refresh Data",
                       isFreeAction: true,
-                      onClick: () =>
-                        this.tableRef.current &&
-                        this.tableRef.current.onQueryChange()
+                      onClick: () => this.getData()
                     }
                   ]}
                 />

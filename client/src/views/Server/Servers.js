@@ -52,11 +52,21 @@ class Server extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [],
-      msg: ""
+      data: []
     };
+  }
 
-    this.tableRef = React.createRef();
+  getData() {
+    fetch("http://localhost:9000/server")
+      .then(response => response.json())
+      .then(data => this.setState({ data }))
+      .catch(function(err) {
+        console.log(err);
+      });
+  }
+
+  componentDidMount() {
+    this.getData();
   }
 
   render() {
@@ -73,33 +83,29 @@ class Server extends Component {
               <CardBody>
                 <MaterialTable
                   title="서버 목록"
-                  tableRef={this.tableRef}
                   columns={[
                     { title: "ID", field: "ID", editable: "onAdd" },
                     { title: "이름", field: "NAME" },
                     { title: "설명", field: "DESCRIPTION" },
                     { title: "아이피", field: "IP" },
                     { title: "설치 위치", field: "INSTALL_LOC" },
-                    { title: "설치 시간", field: "INSTALL_TIME" },
+                    {
+                      title: "설치 시간",
+                      field: "INSTALL_TIME",
+                      type: "datetime"
+                    },
                     { title: "OS 명", field: "OS_NAME" },
                     { title: "OS 버전", field: "OS_VERSION" },
-                    { title: "온라인 시간", field: "ONLINE_TIME" }
+                    {
+                      title: "온라인 시간",
+                      field: "ONLINE_TIME",
+                      type: "datetime"
+                    }
                   ]}
-                  data={query =>
-                    new Promise((resolve, reject) => {
-                      let url = "http://localhost:9000/server";
-                      fetch(url)
-                        .then(response => response.json())
-                        .then(result => {
-                          resolve({
-                            data: result
-                          });
-                        });
-                    })
-                  }
+                  data={this.state.data}
                   editable={{
                     onRowAdd: newData =>
-                      new Promise(resolve => {
+                      new Promise((resolve, reject) => {
                         fetch("http://localhost:9000/server/add", {
                           method: "POST",
                           headers: { "Content-Type": "application/json" },
@@ -111,12 +117,6 @@ class Server extends Component {
                             }
                             return response.json();
                           })
-                          .then(function(data) {
-                            console.log(data);
-                            if (data == "success") {
-                              this.setState({ msg: "Thanks for registering" });
-                            }
-                          })
                           .then(() => {
                             resolve();
                             this.setState(prevState => {
@@ -126,6 +126,7 @@ class Server extends Component {
                             });
                           })
                           .catch(function(err) {
+                            reject();
                             console.log(err);
                           });
                       }),
@@ -145,9 +146,6 @@ class Server extends Component {
                             }
                             return response.json();
                           })
-                          .then(respData => {
-                            console.log(respData);
-                          })
                           .then(() => {
                             resolve();
                             if (oldData) {
@@ -164,7 +162,7 @@ class Server extends Component {
                           });
                       }),
                     onRowDelete: oldData =>
-                      new Promise(resolve => {
+                      new Promise((resolve, reject) => {
                         fetch("http://localhost:9000/server/delete", {
                           method: "POST",
                           headers: { "Content-Type": "application/json" },
@@ -176,13 +174,6 @@ class Server extends Component {
                             }
                             return response.json();
                           })
-                          .then(function(data) {
-                            if (data === "success") {
-                              this.setState({
-                                msg: "Server has been deleted."
-                              });
-                            }
-                          })
                           .then(() => {
                             resolve();
                             this.setState(prevState => {
@@ -192,6 +183,7 @@ class Server extends Component {
                             });
                           })
                           .catch(function(err) {
+                            reject();
                             console.log(err);
                           });
                       })
@@ -201,9 +193,7 @@ class Server extends Component {
                       icon: "refresh",
                       tooltip: "Refresh Data",
                       isFreeAction: true,
-                      onClick: () =>
-                        this.tableRef.current &&
-                        this.tableRef.current.onQueryChange()
+                      onClick: () => this.getData()
                     }
                   ]}
                 />

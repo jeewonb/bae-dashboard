@@ -52,11 +52,21 @@ class Process extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [],
-      msg: ""
+      data: []
     };
+  }
 
-    this.tableRef = React.createRef();
+  getData() {
+    fetch("http://localhost:9000/process")
+      .then(response => response.json())
+      .then(data => this.setState({ data }))
+      .catch(function(err) {
+        console.log(err);
+      });
+  }
+
+  componentDidMount() {
+    this.getData();
   }
 
   render() {
@@ -73,7 +83,6 @@ class Process extends Component {
               <CardBody>
                 <MaterialTable
                   title="프로세스 목록"
-                  tableRef={this.tableRef}
                   columns={[
                     { title: "ID", field: "ID", editable: "onAdd" },
                     { title: "이름", field: "NAME" },
@@ -81,21 +90,10 @@ class Process extends Component {
                     { title: "경로", field: "PATH" },
                     { title: "실행 파일명", field: "EXE_FILE_NAME" }
                   ]}
-                  data={query =>
-                    new Promise((resolve, reject) => {
-                      let url = "http://localhost:9000/process";
-                      fetch(url)
-                        .then(response => response.json())
-                        .then(result => {
-                          resolve({
-                            data: result
-                          });
-                        });
-                    })
-                  }
+                  data={this.state.data}
                   editable={{
                     onRowAdd: newData =>
-                      new Promise(resolve => {
+                      new Promise((resolve, reject) => {
                         fetch("http://localhost:9000/process/add", {
                           method: "POST",
                           headers: { "Content-Type": "application/json" },
@@ -107,12 +105,6 @@ class Process extends Component {
                             }
                             return response.json();
                           })
-                          .then(function(data) {
-                            console.log(data);
-                            if (data == "success") {
-                              this.setState({ msg: "Thanks for registering" });
-                            }
-                          })
                           .then(() => {
                             resolve();
                             this.setState(prevState => {
@@ -122,6 +114,7 @@ class Process extends Component {
                             });
                           })
                           .catch(function(err) {
+                            reject();
                             console.log(err);
                           });
                       }),
@@ -141,9 +134,6 @@ class Process extends Component {
                             }
                             return response.json();
                           })
-                          .then(respData => {
-                            console.log(respData);
-                          })
                           .then(() => {
                             resolve();
                             if (oldData) {
@@ -160,7 +150,7 @@ class Process extends Component {
                           });
                       }),
                     onRowDelete: oldData =>
-                      new Promise(resolve => {
+                      new Promise((resolve, reject) => {
                         fetch("http://localhost:9000/process/delete", {
                           method: "POST",
                           headers: { "Content-Type": "application/json" },
@@ -172,13 +162,6 @@ class Process extends Component {
                             }
                             return response.json();
                           })
-                          .then(function(data) {
-                            if (data === "success") {
-                              this.setState({
-                                msg: "Process has been deleted."
-                              });
-                            }
-                          })
                           .then(() => {
                             resolve();
                             this.setState(prevState => {
@@ -188,6 +171,7 @@ class Process extends Component {
                             });
                           })
                           .catch(function(err) {
+                            reject();
                             console.log(err);
                           });
                       })
@@ -197,9 +181,7 @@ class Process extends Component {
                       icon: "refresh",
                       tooltip: "Refresh Data",
                       isFreeAction: true,
-                      onClick: () =>
-                        this.tableRef.current &&
-                        this.tableRef.current.onQueryChange()
+                      onClick: () => this.getData()
                     }
                   ]}
                 />
