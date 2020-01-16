@@ -71,7 +71,7 @@ router.post("/add", function(req, res, next) {
 });
 
 router.post("/delete", function(req, res, next) {
-  connection.query("DELETE FROM server WHERE ID = ?", req.body.id, function(
+  connection.query("DELETE FROM server WHERE ID = ?", req.body.ID, function(
     error,
     results,
     fields

@@ -52,36 +52,12 @@ class System extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // data: [],
+      data: [],
       msg: ""
     };
-    // We capture the value and change state as system changes the value here.
-    this.logChange = this.logChange.bind(this);
-    // refresh table
+
     this.tableRef = React.createRef();
   }
-
-  logChange(e) {
-    this.setState({
-      [e.target.name]: e.target.value //setting value edited by the admin in state.
-    });
-  }
-
-  eventHandler(event, idx) {
-    let updatedArr = this.state.toggleIdxArray.slice();
-    let checkIdx = updatedArr.indexOf(idx);
-    if (checkIdx === -1) updatedArr.push(idx);
-    else updatedArr.splice(checkIdx, 1);
-    this.setState(prevState => ({
-      toggleIdxArray: updatedArr
-    }));
-  }
-
-  // componentDidMount() {
-  //   fetch("http://localhost:9000/system")
-  //     .then(response => response.json())
-  //     .then(data => this.setState({ data }));
-  // }
 
   render() {
     const { classes } = this.props;
@@ -131,7 +107,7 @@ class System extends Component {
                           })
                           .then(function(data) {
                             console.log(data);
-                            if (data === "success") {
+                            if (data == "success") {
                               this.setState({ msg: "Thanks for registering" });
                             }
                           })
