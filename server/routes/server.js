@@ -12,7 +12,7 @@ connection.connect(function(err) {
 
 /* GET servers listing. */
 router.get("/", function(req, res, next) {
-  connection.query("select * FROM server", function(err, results, fields) {
+  connection.query("SELECT * FROM server", function(err, results, fields) {
     if (!err) {
       res.send(JSON.stringify(results));
     } else {
@@ -29,10 +29,10 @@ router.post("/edit", function(req, res, next) {
       req.body.DESCRIPTION,
       req.body.IP,
       req.body.INSTALL_LOC,
-      req.body.INSTALL_TIME,
+      new Date(req.body.INSTALL_TIME),
       req.body.OS_NAME,
       req.body.OS_VERSION,
-      req.body.ONLINE_TIME,
+      new Date(req.body.ONLINE_TIME),
       req.body.ID
     ],
     function(error, results, fields) {
@@ -54,10 +54,10 @@ router.post("/add", function(req, res, next) {
       req.body.DESCRIPTION,
       req.body.IP,
       req.body.INSTALL_LOC,
-      req.body.INSTALL_TIME,
+      new Date(req.body.INSTALL_TIME),
       req.body.OS_NAME,
       req.body.OS_VERSION,
-      req.body.ONLINE_TIME
+      new Date(req.body.ONLINE_TIME)
     ],
     function(err, results, fields) {
       if (!err) {

@@ -30,7 +30,7 @@ router.post("/edit", function(req, res, next) {
       req.body.NAME,
       req.body.EMAIL,
       req.body.CONTACTS,
-      req.body.DATE,
+      new Date(req.body.DATE),
       req.body.LICENSE,
       req.body.ID
     ],
@@ -53,7 +53,7 @@ router.post("/add", function(req, res, next) {
       req.body.NAME,
       req.body.EMAIL,
       req.body.CONTACTS,
-      req.body.DATE,
+      new Date(req.body.DATE),
       req.body.LICENSE
     ],
     function(err, results, fields) {
