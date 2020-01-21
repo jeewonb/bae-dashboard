@@ -17,6 +17,14 @@ import {
 } from "assets/jss/material-dashboard-react.js";
 
 const sidebarStyle = theme => ({
+  root: {
+    width: "100%",
+    maxWidth: 360,
+    backgroundColor: theme.palette.background.paper
+  },
+  nested: {
+    paddingLeft: theme.spacing(4)
+  },
   drawerPaper: {
     border: "none",
     position: "fixed",

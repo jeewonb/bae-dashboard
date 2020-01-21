@@ -9,10 +9,16 @@ import { makeStyles } from "@material-ui/core/styles";
 import Navbar from "components/Navbars/Navbar.js";
 import Footer from "components/Footer/Footer.js";
 import Sidebar from "components/Sidebar/Sidebar.js";
-// import FixedPlugin from "components/FixedPlugin/FixedPlugin.js";
-
+// core components/views for Admin layout
+import DashboardPage from "views/Dashboard/Dashboard.js";
+import UserProfile from "views/UserProfile/UserProfile.js";
+import Log from "views/Log/Log.js";
+import Performance from "views/Performance/Performance.js";
+import System from "views/System/System.js";
+import Servers from "views/Server/Servers.js";
+import Process from "views/Process/Process.js";
+import User from "views/User/User.js";
 import routes from "routes.js";
-
 import styles from "assets/jss/material-dashboard-react/layouts/adminStyle.js";
 
 // import bgImage from "assets/img/sidebar-5.jpg";
@@ -22,18 +28,14 @@ let ps;
 
 const switchRoutes = (
   <Switch>
-    {routes.map((prop, key) => {
-      if (prop.layout === "/admin") {
-        return (
-          <Route
-            path={prop.layout + prop.path}
-            component={prop.component}
-            key={key}
-          />
-        );
-      }
-      return null;
-    })}
+    <Route path="/admin/dashboard" exact component={DashboardPage} />
+    <Route path="/admin/userProfile" exact component={UserProfile} />
+    <Route path="/admin/userProfile/system" component={System} />
+    <Route path="/admin/userProfile/server" component={Servers} />
+    <Route path="/admin/userProfile/process" component={Process} />
+    <Route path="/admin/log" component={Log} />
+    <Route path="/admin/performance" component={Performance} />
+    <Route path="/admin/user" component={User} />
     <Redirect from="/admin" to="/admin/dashboard" />
   </Switch>
 );

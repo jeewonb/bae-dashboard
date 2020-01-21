@@ -46,7 +46,7 @@ export default function Header(props) {
         <Hidden smDown implementation="css">
           {props.rtlActive ? <RTLNavbarLinks /> : <AdminNavbarLinks />}
         </Hidden>
-        <div mdUp implementation="css">
+        <Hidden mdUp implementation="css">
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -54,7 +54,7 @@ export default function Header(props) {
           >
             <Menu />
           </IconButton>
-        </div>
+        </Hidden>
       </Toolbar>
     </AppBar>
   );

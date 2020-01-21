@@ -54,8 +54,6 @@ class System extends Component {
     this.state = {
       data: []
     };
-    // refresh table
-    this.tableRef = React.createRef();
   }
 
   getData() {
@@ -85,7 +83,6 @@ class System extends Component {
               <CardBody>
                 <MaterialTable
                   title="시스템 목록"
-                  tableRef={this.tableRef}
                   columns={[
                     { title: "ID", field: "ID", editable: "onAdd" },
                     { title: "이름", field: "NAME" },
@@ -183,8 +180,7 @@ class System extends Component {
                       tooltip: "Refresh Data",
                       isFreeAction: true,
                       onClick: () =>
-                        this.tableRef.current &&
-                        this.tableRef.current.onQueryChange()
+                        this.getData()
                     }
                   ]}
                 />
